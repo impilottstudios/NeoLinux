@@ -37,7 +37,7 @@ Custom C# based Linux masked operating system
     
     > apk add --no-cache icu-libs
     
-  > sed -i 's|tty1::.*\|tty1::once:/bin/sh -c "/usr/local/bin/NeoLinux; /sbin/poweroff"\|g' /etc/inittab
+  > sed -i 's\|tty1::.*\|tty1::once:/bin/sh -c "/usr/local/bin/NeoLinux; /sbin/poweroff"\|g' /etc/inittab
   
     
 * Reboot and it should run straight into NeoOS
