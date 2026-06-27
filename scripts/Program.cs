@@ -47,12 +47,12 @@ public class NeoSystem
                     switch (arg)
                     { case "noise": NoiseEngine.Run(d); break;
                         case "neofetch": Console.Clear(); ShowNeoIntro(); break;
-                        case "hermes": HermesEngine.Run(d); break;
+                        case "hermes": /* HermesEngine.Run(d); */ Console.WriteLine("Currently unavailable"); break;
                         case "chronos": ChronosEngine.Run(d); break;
-                        case "mars": Console.Clear(); MarsEngine.Run(); break;
+                        case "mars": Console.Clear(); /* MarsEngine.Run(); */ Console.WriteLine("Currently unavailable"); break;
                         case "espresso": EspressoEngine.Run(d); break;
                         case "plume": PlumeEngine.Run(d); break;
-                        case "connect": ConnectEngine.Run(d); break;
+                        case "connect": /* ConnectEngine.Run(d); */ Console.WriteLine("Currently unavailable"); break;
                         case "install": BuildSystem(IsBuilt); break;
                         default: Console.WriteLine("ERROR: Could not boot into app"); break; } }
                 if (c == "ls")
@@ -293,14 +293,17 @@ public class NeoSystem
             Panic = true; }
     }
 
-    private static void ShowKernelPanic()
+    public static void ShowKernelPanic()
     {
+        var sys = new ErrorImages;
+        sys.ImageWrite();
+
         Console.WriteLine("  _   _");
         Console.WriteLine($" | \\ | | ___  ___");
         Console.WriteLine($" |  \\| |/ _ \\/ _ \\");
         Console.WriteLine($" | |\\  |  __/ (_) |");
         Console.WriteLine(" |_| \\_|\\___|\\___/");
-        var s = "=== KERNEL PANIC ===";
+        var s = "=== ! KERNEL PANIC ! ===";
         Console.SetCursorPosition(Math.Max(0,(Console.WindowWidth - s.Length)/2), Math.Max(0,Console.WindowHeight/2));
         Console.WriteLine(s);
         s = "Cannot find kernel package";
@@ -310,7 +313,11 @@ public class NeoSystem
         Console.SetCursorPosition(Math.Max(0,(Console.WindowWidth - s.Length)/2), Math.Max(0,Console.WindowHeight/2));
         Console.WriteLine(s);
         Console.WriteLine("");
-        s = "'bro you can't delete any .sysNeo files' - charlie (NeoOS)";
+        s = "Please do not touch your system again";
+        Console.SetCursorPosition(Math.Max(0,(Console.WindowWidth - s.Length)/2), Math.Max(0,Console.WindowHeight/2));
+        Console.WriteLine(s);
+        Console.WriteLine("");
+        s = "You must reinstall or repair your .sysNeo config files";
         Console.SetCursorPosition(Math.Max(0,(Console.WindowWidth - s.Length)/2), Math.Max(0,Console.WindowHeight/2));
         Console.WriteLine(s);
         Console.CursorVisible = false;
@@ -319,11 +326,13 @@ public class NeoSystem
 
     private static void ShowNeoIntro()
     {
+        Console.WriteLine("--------------------------------------------------------------");
         Console.WriteLine("  _   _                 ");
         Console.WriteLine($" | \\ | | ___  ___       OS: NeoLinux / NeoOS ({NeoVersion})");
         Console.WriteLine($" |  \\| |/ _ \\/ _ \\      Kernel Version: {KernVersion}");
         Console.WriteLine($" | |\\  |  __/ (_) |     Shell: {shell}");
         Console.WriteLine(" |_| \\_|\\___|\\___/      Author: 'Me!' (Deal With It)");
+        Console.WriteLine("--------------------------------------------------------------");
     }
 
     public static string BuildFileExtension(string content, string extend)
@@ -337,6 +346,13 @@ public class NeoSystem
         return returnFile;
     }
 }
+
+public class ErrorImages
+{ public static void ImageWrite()
+    { var sys = new NeoLinux;
+    Directory.CreateDirectory(Path.Combine(sys.path, "images"));
+    File.WriteAllText(Path.Combine(sys.path, "images"), "images.sysNeo.IMG");
+    sys.ShowKernelPanic(); } }
 
 public static class ConnectEngine
 {
@@ -384,52 +400,35 @@ public static class NoiseEngine
         row = 0; col = 0;
         int topLine = 0;
         bool needsRedraw = true;
-
         while (true)
-        {
-            int winW = Math.Max(1, Console.WindowWidth);
+        { int winW = Math.Max(1, Console.WindowWidth);
             int winH = Math.Max(1, Console.WindowHeight);
-
-            // ensure row/col are inside buffer bounds
             if (row < 0) row = 0;
             if (row >= fileBuffer.Count) { fileBuffer.Add(""); row = fileBuffer.Count - 1; }
             if (col < 0) col = 0;
             if (col > fileBuffer[row].Length) col = fileBuffer[row].Length;
-
-            // adjust viewport to keep cursor visible
             if (row < topLine) topLine = row;
             else if (row >= topLine + winH) topLine = row - winH + 1;
             topLine = Math.Max(0, topLine);
-
             if (needsRedraw)
-            {
-                for (int screenRow = 0; screenRow < winH; screenRow++)
-                {
-                    int bufIdx = topLine + screenRow;
+            { for (int screenRow = 0; screenRow < winH; screenRow++)
+                { int bufIdx = topLine + screenRow;
                     string line = bufIdx < fileBuffer.Count ? fileBuffer[bufIdx] : "";
                     if (line.Length > winW) line = line.Substring(0, winW);
                     Console.SetCursorPosition(0, screenRow);
-                    Console.Write(line.PadRight(winW));
-                }
-                needsRedraw = false;
-            }
-
+                    Console.Write(line.PadRight(winW)); }
+                needsRedraw = false; }
             int cursorRowOnScreen = Math.Max(0, Math.Min(winH - 1, row - topLine));
             int cursorColOnScreen = Math.Max(0, Math.Min(winW - 1, col));
             Console.SetCursorPosition(cursorColOnScreen, cursorRowOnScreen);
-
             var keyPress = Console.ReadKey(intercept: true);
             if (keyPress.KeyChar == '~')
-            {
-                File.WriteAllLines(fullPath, fileBuffer);
+            { File.WriteAllLines(fullPath, fileBuffer);
                 Console.Clear();
                 Console.WriteLine($"[Noise] Successfully wrote data to {fullPath}");
-                break;
-            }
-
+                break; }
             switch (keyPress.Key)
-            {
-                case ConsoleKey.LeftArrow:
+            { case ConsoleKey.LeftArrow:
                     if (col > 0) col--;
                     else if (row > 0) { row--; col = fileBuffer[row].Length; }
                     break;
@@ -448,60 +447,35 @@ public static class NoiseEngine
                 case ConsoleKey.End:
                     col = fileBuffer[row].Length; break;
                 case ConsoleKey.Enter:
-                {
-                    string toShift = fileBuffer[row].Substring(col);
+                { string toShift = fileBuffer[row].Substring(col);
                     fileBuffer[row] = fileBuffer[row].Substring(0, col);
                     fileBuffer.Insert(row + 1, toShift);
-                    row++; col = 0;
-                    needsRedraw = true;
-                    break;
-                }
+                    row++; col = 0; needsRedraw = true; break; }
                 case ConsoleKey.Backspace:
-                {
-                    if (col > 0)
-                    {
-                        fileBuffer[row] = fileBuffer[row].Remove(col - 1, 1);
-                        col--;
-                    }
-                    else if (row > 0)
-                    {
-                        int savedLen = fileBuffer[row - 1].Length;
+                { if (col > 0)
+                    { fileBuffer[row] = fileBuffer[row].Remove(col - 1, 1); col--;
+                    } else if (row > 0)
+                    { int savedLen = fileBuffer[row - 1].Length;
                         fileBuffer[row - 1] += fileBuffer[row];
                         fileBuffer.RemoveAt(row);
-                        row--; col = savedLen;
-                    }
+                        row--; col = savedLen; }
                     needsRedraw = true;
-                    break;
-                }
+                    break; }
                 case ConsoleKey.Delete:
-                {
-                    if (col < fileBuffer[row].Length)
-                    {
-                        fileBuffer[row] = fileBuffer[row].Remove(col, 1);
-                    }
-                    else if (row < fileBuffer.Count - 1)
-                    {
-                        fileBuffer[row] += fileBuffer[row + 1];
-                        fileBuffer.RemoveAt(row + 1);
-                    }
+                { if (col < fileBuffer[row].Length)
+                    { fileBuffer[row] = fileBuffer[row].Remove(col, 1);
+                    } else if (row < fileBuffer.Count - 1)
+                    { fileBuffer[row] += fileBuffer[row + 1];
+                        fileBuffer.RemoveAt(row + 1); }
                     needsRedraw = true;
-                    break;
-                }
+                    break; }
                 case ConsoleKey.Tab:
                     fileBuffer[row] = fileBuffer[row].Insert(col, "    ");
-                    col += 4;
-                    needsRedraw = true;
-                    break;
-                default:
-                    if (!char.IsControl(keyPress.KeyChar))
-                    {
-                        fileBuffer[row] = fileBuffer[row].Insert(col, keyPress.KeyChar.ToString());
+                    col += 4; needsRedraw = true; break;
+                default: if (!char.IsControl(keyPress.KeyChar))
+                    { fileBuffer[row] = fileBuffer[row].Insert(col, keyPress.KeyChar.ToString());
                         col++;
-                        needsRedraw = true;
-                    }
-                    break;
-            }
-        }
+                        needsRedraw = true;}break; } }
     }
 }
 
@@ -741,7 +715,7 @@ public static class EspressoEngine
         { string name = Path.GetFileNameWithoutExtension(count[i]);
             Console.WriteLine($"{i}. {name}"); }
         Console.Write("Please pick your list (By name, case-sensitive): ");
-        if (Console.ReadLine() == "q: exit") Run(count);
+        if (Console.ReadLine() == "exit") Run(count);
         string? opt = Console.ReadLine();
         ViewList(opt);
     }
@@ -774,7 +748,7 @@ public static class EspressoEngine
         { string name = Path.GetFileNameWithoutExtension(count[i]);
             Console.WriteLine($"{i}. {name}"); }
         Console.Write("Please select the list to remove (By name, case-sensitive): ");
-        if (Console.ReadLine() == "q: exit") Run(count);
+        if (Console.ReadLine() == "exit") Run(count);
         string? opt = Path.Combine(folder, $"{Console.ReadLine()}.Neo");
         if (File.Exists(opt)) { File.Delete(opt); }
         else { Console.Clear();
