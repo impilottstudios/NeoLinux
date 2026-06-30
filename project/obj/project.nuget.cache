@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "nPdiwwh8T1g=",
+  "success": true,
+  "projectFilePath": "/media/charlie/ANGELA/Clones/NeoLinux/project/Neo.csproj",
+  "expectedPackageFiles": [
+    "/home/charlie/.nuget/packages/microsoft.ml.onnxruntime/1.20.0/microsoft.ml.onnxruntime.1.20.0.nupkg.sha512",
+    "/home/charlie/.nuget/packages/microsoft.ml.onnxruntime.managed/1.20.0/microsoft.ml.onnxruntime.managed.1.20.0.nupkg.sha512",
+    "/home/charlie/.nuget/packages/microsoft.ml.onnxruntimegenai/0.5.1/microsoft.ml.onnxruntimegenai.0.5.1.nupkg.sha512",
+    "/home/charlie/.nuget/packages/microsoft.ml.onnxruntimegenai.managed/0.5.1/microsoft.ml.onnxruntimegenai.managed.0.5.1.nupkg.sha512",
+    "/home/charlie/.nuget/packages/microsoft.net.illink.tasks/10.0.9/microsoft.net.illink.tasks.10.0.9.nupkg.sha512",
+    "/home/charlie/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/10.0.9/microsoft.netcore.app.runtime.linux-x64.10.0.9.nupkg.sha512",
+    "/home/charlie/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/10.0.9/microsoft.aspnetcore.app.runtime.linux-x64.10.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}

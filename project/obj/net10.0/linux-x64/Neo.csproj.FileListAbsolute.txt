@@ -1,0 +1,6 @@
+/media/charlie/ANGELA/Clones/NeoLinux/project/obj/net10.0/linux-x64/Neo.csproj.AssemblyReference.cache
+/media/charlie/ANGELA/Clones/NeoLinux/project/obj/net10.0/linux-x64/Neo.GeneratedMSBuildEditorConfig.editorconfig
+/media/charlie/ANGELA/Clones/NeoLinux/project/obj/net10.0/linux-x64/Neo.AssemblyInfoInputs.cache
+/media/charlie/ANGELA/Clones/NeoLinux/project/obj/net10.0/linux-x64/Neo.AssemblyInfo.cs
+/media/charlie/ANGELA/Clones/NeoLinux/project/obj/net10.0/linux-x64/Neo.csproj.CoreCompileInputs.cache
+/media/charlie/ANGELA/Clones/NeoLinux/project/obj/net10.0/linux-x64/Neo.sourcelink.json

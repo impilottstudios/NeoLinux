@@ -1,6 +1,11 @@
 # NeoLinux
 Custom C# based Linux masked operating system
 
+## Author Notes
+Chronos relies on the engine folder called ChronosEngine,
+and I cannot push that folder to GitHub. I will try and
+upload it to my website for your download. Thank you.
+
 # How to install
 ## Prep work
 * Install *Alpine Linux* without a graphical interface.
@@ -51,7 +56,5 @@ Custom C# based Linux masked operating system
 
 
 * Make sure to copy over the OnnxRuntime files into the same directory as Neo. 
-
-  *ChronosEngine files will be added soon*
 
 * Reboot and it should run straight into NeoOS

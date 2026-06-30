@@ -17,7 +17,7 @@ public class NeoSystem
     private static bool IsBuilt { get; set; } = false;
     private static bool Panic;
     private static string NeoVersion { get; set; } = "Golden Gate";
-    private static string KernVersion { get; set; } = "0.2.0";
+    private static string KernVersion { get; set; } = "0.3.0";
     private static string shell { get; set; } = "NeoPrompt";
     private static string CachePath { get; set; } = Path.Combine(path, "cache");
     private static string KernelPath { get; set; } = Path.Combine(path, "cache", "sysKernel");
@@ -295,7 +295,7 @@ public class NeoSystem
 
     public static void ShowKernelPanic()
     {
-        var sys = new ErrorImages;
+        var sys = new ErrorImages();
         sys.ImageWrite();
 
         Console.WriteLine("  _   _");
@@ -331,7 +331,7 @@ public class NeoSystem
         Console.WriteLine($" | \\ | | ___  ___       OS: NeoLinux / NeoOS ({NeoVersion})");
         Console.WriteLine($" |  \\| |/ _ \\/ _ \\      Kernel Version: {KernVersion}");
         Console.WriteLine($" | |\\  |  __/ (_) |     Shell: {shell}");
-        Console.WriteLine(" |_| \\_|\\___|\\___/      Author: 'Me!' (Deal With It)");
+        Console.WriteLine(" |_| \\_|\\___|\\___/      Author: 'Charlie Tail");
         Console.WriteLine("--------------------------------------------------------------");
     }
 
@@ -348,11 +348,11 @@ public class NeoSystem
 }
 
 public class ErrorImages
-{ public static void ImageWrite()
-    { var sys = new NeoLinux;
-    Directory.CreateDirectory(Path.Combine(sys.path, "images"));
-    File.WriteAllText(Path.Combine(sys.path, "images"), "images.sysNeo.IMG");
-    sys.ShowKernelPanic(); } }
+{ public void ImageWrite()
+    { var sys = new NeoSystem();
+    Directory.CreateDirectory(Path.Combine(NeoSystem.path, "images"));
+    File.WriteAllText(Path.Combine(NeoSystem.path, "images"), "images.sysNeo.IMG");
+    NeoSystem.ShowKernelPanic(); } }
 
 public static class ConnectEngine
 {
@@ -391,9 +391,7 @@ public static class NoiseEngine
     {
         Console.Clear();
         fileName = dep.Length > 0 ? dep[0] : NeoSystem.BuildFileExtension("untitled", "");
-        fullPath =
-        dep.Length > 0 ? Path.Combine(NeoSystem.path, fileName)
-            : Path.Combine(AppContext.BaseDirectory, "applications", "noiseEngine", fileName);
+        fullPath = Path.Combine(AppContext.BaseDirectory, "applications", "noiseEngine", fileName);
         fileBuffer = File.Exists(fullPath)
         ? new List<string>(File.ReadAllLines(fullPath))
         : new List<string> { "" };
