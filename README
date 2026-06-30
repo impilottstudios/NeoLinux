@@ -13,11 +13,11 @@ upload it to my website for your download. Thank you.
 * Install .NET 10.0
 
 ## Install NeoLinux
-* Download "Neo_linux1.0.0" from the releases page
-* Move "Neo_linux1.0.0" to a USB drive
+* Download "Neo_linux1.x.x" from the releases page
+* Move "Neo_linux1.x.x" to a USB drive
 * Download both OnnxRuntime and OnnxRuntimeGenAI
 * Move the runtimes into the same USB drive
-* Rename "Neo_linux1.0.0" to "Neo"
+* Rename "Neo_linux1.x.x" to "Neo"
 * Connect a USB drive and run the following commands:
 
     > su -
